@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>WebSocket Test</title>
+
+<script language="javascript" type="text/javascript">
+
+    var wsUri = "wss://localhost:5001/ws";
+    var output;
+    var ctr = 1;
+    var totalRequests = 6; /* total commands to test */
+
+    function init()
+    {
+        output = document.getElementById("output");
+        testWebSocket();
+    }
+
+    function testWebSocket()
+    {
+        websocket = new WebSocket(wsUri);
+        websocket.onopen = function(evt) { onOpen(evt) };
+        websocket.onclose = function(evt) { onClose(evt) };
+        websocket.onmessage = function(evt) { onMessage(evt) };
+        websocket.onerror = function (evt) { onError(evt) };
+    }
+
+    function testCommands() {
+        switch (ctr) {
+            case 1:
+                var emailVerification = {
+                    "command": "emailVerification",
+                    "email": "john.doe@mail.com",
+                    "username": "johndoe"
+                };
+                doSend(JSON.stringify(emailVerification));
+                break;
+            case 2:
+                var register = {
+                    "command": "register",
+                    "username": "johndoe",
+                    "displayName": "Bigjohndoe",
+                    "password": "8437ae0231129d7038809d7aa68e89430b73e245b99b9cc662cbc0bd9cc6f6da",
+                    "password2": "8437ae0231129d7038809d7aa68e894902345bde25ad0fb662cbc0bd9cc6f6da",
+                    "email": "john.doe@mail.com",
+                    "verificationCode": "123456"
+                };
+                doSend(JSON.stringify(register));
+                break;
+            case 3:
+                var checkUsername = {
+                    "command": "checkUsername",
+                    "username": "johndoe"
+                };
+                doSend(JSON.stringify(checkUsername));
+                break;
+            case 4:
+                var checkUsername = {
+                    "command": "checkEmail",
+                    "email": "john.doe@mail.com"
+                };
+                doSend(JSON.stringify(checkUsername));
+                break;
+            case 5:
+                var loginSalt = {
+                    "command": "loginSalt",
+                    "username": "johndoe"
+                };
+                doSend(JSON.stringify(loginSalt));
+            case 6:
+                var login = {
+                    "command": "login",
+                    "usernameOrEmail": "johndoe",
+                    "challenge": "02b78364fee0f76cdfb64c17b6a919b2940198742cb3f989af9271a81e9471c8"
+                };
+                doSend(JSON.stringify(login));
+                break;
+        }
+    }
+
+    function onOpen(evt)
+    {
+        writeToScreen("CONNECTED");
+        testCommands();
+    }
+
+    function onClose(evt)
+    {
+        writeToScreen("DISCONNECTED");
+    }
+
+    function onMessage(evt)
+    {
+        writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
+
+        if (ctr == totalRequests)
+            websocket.close();
+        else
+        {
+            ctr++;
+            testCommands();
+        }
+    }
+
+    function onError(evt)
+    {
+        writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+    }
+
+    function doSend(message)
+    {
+        writeToScreen("SENT: " + message);
+        websocket.send(message);
+    }
+
+    function writeToScreen(message)
+    {
+        var pre = document.createElement("p");
+        pre.style.wordWrap = "break-word";
+        pre.innerHTML = message;
+        output.appendChild(pre);
+    }
+
+    window.addEventListener("load", init, false);
+
+  </script>
+
+  <h2>BackendTest-UnitTest (Web Socket Test)</h2>
+
+  <div id="output"></div>

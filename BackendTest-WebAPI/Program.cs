@@ -1,18 +1,14 @@
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace BackendTest_WebAPI
+namespace BackendTestWebAPI
 {
     public class Program
     {
         public static void Main(string[] args)
         {
+            PrepareDatabase();
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -22,5 +18,18 @@ namespace BackendTest_WebAPI
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        private static void PrepareDatabase()
+        {
+            try
+            {
+                var options = new DbContextOptions<DbContext>();
+                using var context = new Models.AppDbContext(options);
+
+                //context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+            }
+            catch { throw; }
+        }
     }
 }
