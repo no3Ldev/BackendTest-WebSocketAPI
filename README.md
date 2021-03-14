@@ -6,6 +6,8 @@ Configured for HTTPS <br>
 Enabled Docker Support (Windows) <br>
 Enabled OpenAPI support <br>
 
+![image](https://user-images.githubusercontent.com/13361597/111087768-5ede9e80-855e-11eb-857e-6497c8b76a6a.png)
+
 PROJECTS: <br>
 BackendTest-WebAPI - main web api project (VS > Debug > Start Debugging) <br>
 BackendTest-UnitTest - unit testing project to test web api functions (VS > Test > Run All Test) <br>
