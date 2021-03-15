@@ -1,51 +1,84 @@
-# BackendTest-WebAPI
-(Sidekick) Backend Test - Web API
+# Backend Test - Web API with WebSocket
+This is a sample ASP.NET Core Web API project that exposes both classic Web API and WebSockets endpoints to process API requests in JSON format from client. It uses Microsoft Azure Database for PostgreSQL as its datasource and Entity Framework Core for its data operations such as user registration and authentication, session management, and verification code system.
 
-ASP.NET Core 5.0 Web API <br>
-Configured for HTTPS <br>
-Enabled Docker Support (Windows) <br>
-Enabled OpenAPI support <br>
+## Technologies Used:
+* ASP.NET Core 5.0 Web API
+* Configured for HTTPS
+* Enabled Docker Support (Windows)
+* Enabled OpenAPI support
+* Raw WebSocket protocol
+* MSTest Unit Testing
+* Built-in Swagger Support
+* Azure Database for PostgreSQL v11
+* Microsoft Entity Framework Core (PostgreSQL)
+* SHA-256 HMAC hashing
 
-PROJECTS: <br>
-BackendTest-WebAPI - main web api project (VS > Debug > Start Debugging) <br>
-BackendTest-UnitTest - unit testing project to test web api functions (VS > Test > Run All Test) <br>
+## Visual Studio Projects
+* <b>BackendTest-WebAPI</b> - main web api project
+* <b>BackendTest-UnitTest</b> - unit testing project to test web api functions
 
-BackendTest-UnitTest: <br>
-_BaseClass - shared methods used among all test classes <br>
-1-5*Test.cs - unit testing methods for web api <br>
-6-WebSocketTest - unresolved. unit testing for web socket <br>
-6-WebSocketTest.html - unit testing for web socket using javascript (Open on web browser to run) <br>
+## Unit-Test Project: BackendTest-UnitTest
+* <b>_BaseClass.cs</b> - shared methods used among all test classes
+* <b>1-5*Test.cs</b> - unit testing classes for web api
+* <b>6-WebSocketTest.cs</b> - unresolved. Supposed unit testing for web socket
+* <b>6-WebSocketTest.html</b> - unit testing for web socket using javascript
 
+## How to Test?
+* <b>MSTest Unit-Testing for Web API</b> - on visual studio, press `Ctrl+R, A` or go to `Test` menu, then click `Run All Test` item
+* <b>Swagger for Web API</b> - on visual studio, press `F5` or go to `Debug` menu then click `Start Debugging` item
+* <b>Web Client (Javascript) for Web Socket</b> - on `BackEndTest-UnitTest` project, open `6-WebSocketTest.html` on your web browser
+* <b>Use Third-Party WebSocket Test Client for Chrome</b> - install `WebSocket Test Client` extension found <a href="https://chrome.google.com/webstore/detail/websocket-test-client/fgponpodhbmadfljofbimhhlengambbn" target="_blank">here</a> in Chrome Web Store
+
+## Sample JSON Request and Response
+``` json
+/* Client Request */
+{
+    "command": "emailVerification",
+    "email": "john.doe@mail.com",
+    "username": "johndoe"
+}
+/* Server Response */
+{
+    "command": "emailVerification",
+    "success": true,
+    "remarks": null
+}
+/* Remarks will contain reason when success returns false */
+```
+
+## Web API Controllers: <br>
+* <b>AuthenticateController.cs</b> - generate login salt <br>
+* <b>AvailableController.cs</b> - checks if username or email has already been used <br>
+* <b>BaseController.cs</b> - shared methods across all controllers <br>
+* <b>HashController.cs</b> - generate sha 256 hmac hash of text and key <br>
+* <b>LoginController.cs</b> - login user and details <br>
+* <b>RegisterController.cs</b> - register new user to database <br>
+* <b>VerifyController.cs</b> - generate verification code <br>
+
+## Middleware Service
+* <b>WebSocketExtension.cs</b> - add middleware as service to project <br>
+* <b>WebSockHandler.cs</b> - socket connection and events handler <br>
+* <b>WebSocketmanager.cs</b> - sockets connections manager <br>
+* <b>WebSocketMiddleware.cs</b> - implements sockets management and events <br>
+* <b>WebSocketRequestHandler.cs</b> - handles requests and response to/from clients <br>
+
+## Database Tables
+* <b>User</b> - where registered users are stored
+* <b>Authentication</b> - stores login salt requests and validity
+* <b>Login</b> - successful logins history
+* <b>Verification</b> - stores verification codes and validity
+
+## Configuration: AppSettings
+* <b>base_address</b> - actual url path to web api <br>
+* <b>https_port</b> - port number for https connections <br>
+* <b>superSecretKey</b> - secret key to further hash stored passwords <br>
+* <b>salt_expiry</b> - login salt expiration in seconds <br>
+* <b>session_expiry</b> - login session expiration in seconds <br>
+* <b>verification_expiry</b> - verification code expiration in seconds <br>
+* <b>verification_max</b> - maximum verification code requests per day <br>
+
+## Testing Screenshots:
 ![image](https://user-images.githubusercontent.com/13361597/111085870-5c774700-8554-11eb-9d26-a9288265113c.png)
 ![image](https://user-images.githubusercontent.com/13361597/111085925-96e0e400-8554-11eb-8611-7ee9bbd5575d.png)
+![image](https://user-images.githubusercontent.com/13361597/111087768-5ede9e80-855e-11eb-857e-6497c8b76a6a.png)
 
-CONTROLLERS: <br>
-AuthenticateController - generate login salt <br>
-AvailableController - checks if username or email has already been used <br>
-BaseController - shared methods across all controllers <br>
-HashController - generate sha 256 hmac hash of text and key <br>
-LoginController - login user and details <br>
-RegisterController - register new user to database <br>
-VerifyController - generate verification code <br>
-
-SERVICES: <br>
-WebSocketExtension - add middleware as service to project <br>
-WebSockHandler - socket connection and events handler <br>
-WebSocketmanager - sockets connections manager <br>
-WebSocketMiddleware - implements sockets management and events <br>
-WebSocketRequestHandler - handles requests and response to/from clients <br>
-
-TABLES: <br>
-User - where registered users are stored <br>
-Authentication - stores login salt requests and validity <br>
-Login - successful logins history <br>
-Verification - stores verification codes and validity <br>
-
-APPSETTINGS: <br>
-base_address - actual url path to web api <br>
-https_port - port number for https connections <br>
-superSecretKey - secret key to further hash stored passwords <br>
-salt_expiry - login salt expiration in seconds <br>
-session_expiry - login session expiration in seconds <br>
-verification_expiry - verification code expiration in seconds <br>
-verification_max - maximum verification code requests per day <br>
