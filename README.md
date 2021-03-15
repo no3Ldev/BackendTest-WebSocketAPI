@@ -27,7 +27,7 @@ This is a sample ASP.NET Core Web API project that exposes both classic Web API 
 * <b>MSTest Unit-Testing for Web API</b> - on visual studio, press `Ctrl+R, A` or go to `Test` menu, then click `Run All Test` item
 * <b>Swagger for Web API</b> - on visual studio, press `F5` or go to `Debug` menu then click `Start Debugging` item
 * Web Client (Javascript) for Web Socket - on `BackEndTest-UnitTest` project, open `6-WebSocketTest.html` on your web browser
-* Use Third-Party WebSocket Test Client for Chrome - install `WebSocket Test Client` extension found on Chrome Web Store
+* Use Third-Party WebSocket Test Client for Chrome - install `WebSocket Test Client` extension found <a href="https://chrome.google.com/webstore/detail/websocket-test-client/fgponpodhbmadfljofbimhhlengambbn" target="_blank">here</a> in Chrome Web Store
 
 ## Sample JSON Request and Response
 ```
