@@ -67,6 +67,7 @@ namespace BackendTestWebAPI.Controllers
                 var ctrlHash = new HashController();
                 var passwordHash = ctrlHash.Get(param.Password, GetSettings("superSecretKey"));
                 var password2Hash = ctrlHash.Get(param.Password2, GetSettings("superSecretKey"));
+                var password3Hash = ctrlHash.Get(param.Password3, GetSettings("superSecretKey"));
 
                 var user = new User
                 {
@@ -74,6 +75,7 @@ namespace BackendTestWebAPI.Controllers
                     DisplayName = param.DisplayName,
                     Password = passwordHash,
                     Password2 = password2Hash,
+                    Password3 = password3Hash,
                     Email = param.Email,
                     VerificationCode = param.VerificationCode
                 };
