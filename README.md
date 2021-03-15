@@ -14,14 +14,19 @@ This is a sample ASP.NET Core Web API project that exposes both classic Web API 
 * SHA-256 HMAC hashing
 
 ## Visual Studio Projects
-* <b>BackendTest-WebAPI</b> - main web api project (VS > Debug > Start Debugging)
-* <b>BackendTest-UnitTest</b> - unit testing project to test web api functions (VS > Test > Run All Test)
+* <b>BackendTest-WebAPI</b> - main web api project
+* <b>BackendTest-UnitTest</b> - unit testing project to test web api functions
 
 ## Unit-Test Project: BackendTest-UnitTest
 * <b>_BaseClass.cs</b> - shared methods used among all test classes
 * <b>1-5*Test.cs</b> - unit testing classes for web api
 * <b>6-WebSocketTest.cs</b> - unresolved. Supposed unit testing for web socket
-* <b>6-WebSocketTest.html</b> - unit testing for web socket using javascript (Open on web browser to run)
+* <b>6-WebSocketTest.html</b> - unit testing for web socket using javascript
+
+## How to Test?
+* <b>MSTest Unit-Testing for Web API</b> - on visual studio, press `Ctrl+R, A` or go to `Test` menu, then click `Run All Test` item
+* <b>Swagger for Web API</b> - on visual studio, press `F5` or go to `Debug` menu then click `Start Debugging` item
+* Web Client (Javascript) for Web Socket - on `BackEndTest-UnitTest` project, open `6-WebSocketTest.html` on your web browser
 
 ### Web API Controllers: <br>
 * <b>AuthenticateController.cs</b> - generate login salt <br>
