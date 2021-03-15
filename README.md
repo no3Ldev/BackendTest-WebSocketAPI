@@ -45,7 +45,7 @@ This is a sample ASP.NET Core Web API project that exposes both classic Web API 
 }
 ```
 
-### Web API Controllers: <br>
+## Web API Controllers: <br>
 * <b>AuthenticateController.cs</b> - generate login salt <br>
 * <b>AvailableController.cs</b> - checks if username or email has already been used <br>
 * <b>BaseController.cs</b> - shared methods across all controllers <br>
