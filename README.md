@@ -20,7 +20,7 @@ This is a sample ASP.NET Core Web API project that exposes both classic Web API 
 ## Unit-Test Project: BackendTest-UnitTest
 * <b>_BaseClass.cs</b> - shared methods used among all test classes
 * <b>1-5*Test.cs</b> - unit testing classes for web api
-* <b>6-WebSocketTest.cs</b> - Unresolved. Supposed unit testing for web socket
+* <b>6-WebSocketTest.cs</b> - unresolved. Supposed unit testing for web socket
 * <b>6-WebSocketTest.html</b> - unit testing for web socket using javascript (Open on web browser to run)
 
 ### Web API Controllers: <br>
@@ -54,7 +54,7 @@ This is a sample ASP.NET Core Web API project that exposes both classic Web API 
 * <b>verification_expiry</b> - verification code expiration in seconds <br>
 * <b>verification_max</b> - maximum verification code requests per day <br>
 
-### TESTING SCREENSHOTS:
+### Testing Screenshots:
 ![image](https://user-images.githubusercontent.com/13361597/111085870-5c774700-8554-11eb-9d26-a9288265113c.png)
 ![image](https://user-images.githubusercontent.com/13361597/111085925-96e0e400-8554-11eb-8611-7ee9bbd5575d.png)
 ![image](https://user-images.githubusercontent.com/13361597/111087768-5ede9e80-855e-11eb-857e-6497c8b76a6a.png)
