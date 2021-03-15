@@ -30,7 +30,7 @@ This is a sample ASP.NET Core Web API project that exposes both classic Web API 
 * <b>Use Third-Party WebSocket Test Client for Chrome</b> - install `WebSocket Test Client` extension found <a href="https://chrome.google.com/webstore/detail/websocket-test-client/fgponpodhbmadfljofbimhhlengambbn" target="_blank">here</a> in Chrome Web Store
 
 ## Sample JSON Request and Response
-```
+``` json
 /* Client Request */
 {
     "command": "emailVerification",
@@ -41,8 +41,9 @@ This is a sample ASP.NET Core Web API project that exposes both classic Web API 
 {
     "command": "emailVerification",
     "success": true,
-    "remarks": null --will have reason when success is false
+    "remarks": null
 }
+/* Remarks will contain reason when success returns false */
 ```
 
 ## Web API Controllers: <br>
