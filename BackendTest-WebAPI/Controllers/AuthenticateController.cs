@@ -39,7 +39,8 @@ namespace BackendTestWebAPI.Controllers
                     return response;
                 }
 
-                var salt = "cbb4a64006378ec261840d39ab6cc76048f3dad16e19b7db508fb11ba4594c51"; //fixed for now
+                var ctrlHash = new HashController();
+                var salt = ctrlHash.Get(Guid.NewGuid().ToString(), DateTime.Now.ToString());
                 var validity = int.Parse(GetSettings("salt_expiry")); //in seconds
 
                 var authFound = _context.Authentications
