@@ -8,8 +8,8 @@ namespace BackendTestWebSocket
     {
         public static void Main(string[] args)
         {
-            PrepareDatabase();
             CreateHostBuilder(args).Build().Run();
+            PrepareDatabase();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

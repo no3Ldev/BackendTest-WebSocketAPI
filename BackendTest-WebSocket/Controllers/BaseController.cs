@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BackendTestWebSocket.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -9,10 +10,12 @@ namespace BackendTestWebSocket.Controllers
     public class BaseController : ControllerBase
     {
         private readonly IConfiguration _config;
+        protected readonly AppDbContext _context;
 
-        public BaseController(IConfiguration config)
+        public BaseController(IConfiguration config, AppDbContext context)
         {
             _config = config;
+            _context = context;
         }
 
         protected string GetSettings(string key)

@@ -11,6 +11,8 @@
     var verificationCode = "";
     var loginSalt = "";
     var loginChallenge = "";
+    var isConnected = false;
+    var hasError = false;
 
     function init()
     {
@@ -103,35 +105,34 @@
     function onOpen(evt)
     {
         writeToScreen("CONNECTED");
+        isConnected = true;
         testCommands();
     }
 
     function onClose(evt)
     {
-        writeToScreen("DISCONNECTED");
+        if (isConnected && !hasError) {
+            writeToScreen("DISCONNECTED");
+        }
     }
 
     function onMessage(evt)
     {
         var jsonData = JSON.parse(evt.data);
-        var jsonValue;
 
-        if (jsonData.Value == undefined) {
+        if (jsonData.Success === false)
+            writeToScreen('<span style="color: red;">RESPONSE: ' + evt.data + '</span>');
+        else
             writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data + '</span>');
-            jsonValue = jsonData;
-        } else {
-            writeToScreen('<span style="color: blue;">RESPONSE: ' + JSON.stringify(jsonData.Value) + '</span>');
-            jsonValue = jsonData.Value;
-        }
-        
-        if (jsonValue.Command == "getVerificationCode" && jsonValue.Success) {
-            verificationCode = jsonValue.Remarks;
+
+        if (jsonData.Command == "getVerificationCode" && jsonData.Success) {
+            verificationCode = jsonData.Remarks;
         } else
-            if (jsonValue.Command == "loginSalt" && jsonValue.Success) {
-                loginSalt = jsonValue.Salt;
+            if (jsonData.Command == "loginSalt" && jsonData.Success) {
+                loginSalt = jsonData.Salt;
             } else
-                if (jsonValue.Command == "hash" && jsonValue.Success) {
-                    loginChallenge = jsonValue.Output;
+                if (jsonData.Command == "hash" && jsonData.Success) {
+                    loginChallenge = jsonData.Output;
                 }
         
         if (ctr == totalRequests)
@@ -145,7 +146,17 @@
 
     function onError(evt)
     {
-        writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+        if (evt.data === undefined) {
+            if (isConnected === false) {
+                writeToScreen('<span style="color: red;">Connection to &#39;' + wsUri + '&#39; failed.</span>');
+            } else {
+                writeToScreen('<span style="color: red;">ERROR:</span> ' + evt);
+            }
+        } else {
+            writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+        }
+
+        hasError = true;
     }
 
     function doSend(message)

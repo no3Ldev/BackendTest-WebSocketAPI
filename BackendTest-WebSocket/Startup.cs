@@ -10,18 +10,28 @@ namespace BackendTestWebSocket
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        private IConfiguration _config { get; }
+        private IWebHostEnvironment _environment { get; }
 
-        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration config, IWebHostEnvironment environment)
+        {
+            _config = config;
+            _environment = environment;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("Datasource")));
+            if (_environment.EnvironmentName == "Testing")
+            {
+                services.AddDbContext<AppDbContext>(options =>
+                    options.UseNpgsql(_config.GetConnectionString("Datasource")), ServiceLifetime.Singleton);
+            }
+            else
+            {
+                services.AddDbContext<AppDbContext>(options =>
+                    options.UseNpgsql(_config.GetConnectionString("Datasource")));
+            }
 
             services.AddWebSocketManager();
         }
@@ -35,7 +45,6 @@ namespace BackendTestWebSocket
 
             app.UseWebSockets();
             app.MapWebSocketManager("/ws", serviceHandler);
-            app.UseStaticFiles();
         }
     }
 }

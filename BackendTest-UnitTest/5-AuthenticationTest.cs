@@ -1,7 +1,6 @@
-using BackendTestWebAPI.Models;
+using BackendTestWebSocket.Controllers;
+using BackendTestWebSocket.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Net;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BackendTestUnitTest
@@ -24,39 +23,42 @@ namespace BackendTestUnitTest
                 Username = "johndoe"
             };
 
-            var client = _factory.CreateClient();
-            var response = await client.PostAsync($"api/Authenticate", ObjectToJsonContent(param));
+            var client = new AuthenticateController(_config, _context);
+            var response = await client.Post(param);
 
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(CONTENT_TYPE_JSON, response.Content.Headers.ContentType?.ToString());
-
-            var strResult = await response.Content.ReadAsStringAsync();
-            var objResult = JsonSerializer.Deserialize<AuthenticationResponse>(strResult, _jsonOptions);
-            var expResult = "cbb4a64006378ec261840d39ab6cc76048f3dad16e19b7db508fb11ba4594c51"; //salt
-
-            Assert.AreEqual(expResult, objResult.Salt, "Wrong Salt value!");
+            Assert.IsTrue(response.Success, response.Remarks);
         }
 
         [TestMethod]
         public async Task PostSigninRequest()
         {
+            var paramAuth = new AuthenticationParam
+            {
+                Command = "loginSalt",
+                Username = "johndoe"
+            };
+
+            var clientAuth = new AuthenticateController(_config, _context);
+            var responseAuth = await clientAuth.Post(paramAuth);
+
+            Assert.IsTrue(responseAuth.Success, responseAuth.Remarks);
+
+            var hashedUsername = "92d55f54ca872dc20c2f882b22e152f9c82ff62c66e1b9461e9f80011b3255c6";
+            
+            var clientHash = new HashController();
+            var hashOutput = clientHash.Get(hashedUsername, responseAuth.Salt);
+
             var param = new LoginParam
             {
                 Command = "login",
                 UsernameOrEmail = "johndoe",
-                Challenge = "02b78364fee0f76cdfb64c17b6a919b2940198742cb3f989af9271a81e9471c8"
+                Challenge = hashOutput
             };
 
-            var client = _factory.CreateClient();
-            var response = await client.PostAsync($"api/Login", ObjectToJsonContent(param));
+            var client = new LoginController(_config, _context);
+            var response = await client.Post(param);
 
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(CONTENT_TYPE_JSON, response.Content.Headers.ContentType?.ToString());
-
-            var strResult = await response.Content.ReadAsStringAsync();
-            var objResult = JsonSerializer.Deserialize<LoginResponse>(strResult, _jsonOptions);
-
-            Assert.IsNotNull(objResult.SessionId, "Session Id is empty!");
+            Assert.IsNotNull(response.Success, response.Remarks);
         }
 
         [ClassCleanup]

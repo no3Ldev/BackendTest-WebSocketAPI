@@ -1,5 +1,4 @@
 ﻿using BackendTestWebSocket.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,25 +9,23 @@ namespace BackendTestWebSocket.Controllers
 {
     public class VerifyController : BaseController
     {
-        private readonly AppDbContext _context;
+        public VerifyController(IConfiguration config, AppDbContext context) : base(config, context) { }
 
-        public VerifyController(IConfiguration config, AppDbContext context) : base(config)
+        public async Task<VerificationResponse> Post(VerificationParam param)
         {
-            _context = context;
-        }
+            var response = new VerificationResponse
+            {
+                Command = param.Command,
+                Success = false
+            };
 
-        public async Task<ActionResult<VerificationResponse>> Post(VerificationParam param)
-        {
             try
             {
                 if (param.Command != "emailVerification")
-                    return BadRequest();
-
-                var response = new VerificationResponse
                 {
-                    Command = param.Command,
-                    Success = false
-                };
+                    response.Remarks = "Invalid command";
+                    return response;
+                }
 
                 if (_context.Users.Any(u => u.Username == param.Username || u.Email == param.Email))
                 {
@@ -73,11 +70,12 @@ namespace BackendTestWebSocket.Controllers
             }
             catch (Exception ex)
             {
-                return ErrorCode(ex.Message);
+                response.Remarks = ex.Message;
+                return response;
             }
         }
 
-        public async Task<ActionResult<VerificationResponse>> Get(VerificationParam param)
+        public async Task<VerificationResponse> Get(VerificationParam param)
         {
             var response = new VerificationResponse
             {
@@ -88,7 +86,6 @@ namespace BackendTestWebSocket.Controllers
             var verification = await _context.Verifications //get latest verification code
                 .OrderByDescending(a => a.Id)
                 .Where(a => a.Username == param.Username && a.Timestamp >= DateTime.Today && a.ExpirationTime >= DateTime.Now)
-                .AsNoTracking()
                 .FirstOrDefaultAsync();
 
             if (verification != null)

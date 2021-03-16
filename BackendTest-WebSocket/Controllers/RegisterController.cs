@@ -1,5 +1,4 @@
 ﻿using BackendTestWebSocket.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -11,26 +10,24 @@ namespace BackendTestWebSocket.Controllers
 {
     public class RegisterController : BaseController
     {
-        private readonly AppDbContext _context;
+        public RegisterController(IConfiguration config, AppDbContext context) : base(config, context) { }
 
-        public RegisterController(IConfiguration config, AppDbContext context) : base(config)
+        public async Task<RegistrationResponse> Post(RegistrationParam param)
         {
-            _context = context;
-        }
+            var response = new RegistrationResponse
+            {
+                Command = param.Command,
+                Username = param.Username,
+                Success = false
+            };
 
-        public async Task<ActionResult<RegistrationResponse>> Post(RegistrationParam param)
-        {
             try
             {
                 if (param.Command != "register")
-                    return BadRequest();
-
-                var response = new RegistrationResponse
                 {
-                    Command = param.Command,
-                    Username = param.Username,
-                    Success = false
-                };
+                    response.Remarks = "Invalid command";
+                    return response;
+                }
 
                 if (string.IsNullOrWhiteSpace(param.Username))
                 {
@@ -94,7 +91,8 @@ namespace BackendTestWebSocket.Controllers
             }
             catch (Exception ex)
             {
-                return ErrorCode(ex.Message);
+                response.Remarks = ex.Message;
+                return response;
             }
         }
     }

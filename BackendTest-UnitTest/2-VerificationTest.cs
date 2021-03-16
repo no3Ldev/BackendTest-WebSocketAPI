@@ -1,7 +1,6 @@
-using BackendTestWebAPI.Models;
+using BackendTestWebSocket.Controllers;
+using BackendTestWebSocket.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Net;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BackendTestUnitTest
@@ -18,6 +17,8 @@ namespace BackendTestUnitTest
         [TestMethod]
         public async Task PostVerification()
         {
+            GetContext();
+
             var param = new VerificationParam
             {
                 Command = "emailVerification",
@@ -25,31 +26,27 @@ namespace BackendTestUnitTest
                 Username = "johndoe"
             };
 
-            var client = _factory.CreateClient();
-            var response = await client.PostAsync($"api/Verify", ObjectToJsonContent(param));
+            var client = new VerifyController(_config, _context);
+            var response = await client.Post(param);
 
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(CONTENT_TYPE_JSON, response.Content.Headers.ContentType?.ToString());
-
-            var strResult = await response.Content.ReadAsStringAsync();
-            var objResult = JsonSerializer.Deserialize<VerificationResponse>(strResult, _jsonOptions);
-
-            Assert.IsNotNull(objResult.Success, "Verification failed!");
+            Assert.IsNotNull(response.Success, response.Remarks);
         }
 
         [TestMethod]
         public async Task VerificationCodeGet()
         {
-            var username = "johndoe";
+            GetContext();
 
-            var client = _factory.CreateClient();
-            var response = await client.GetAsync($"api/Verify/{username}");
+            var param = new VerificationParam
+            {
+                Command = "getVerificationCode",
+                Username = "johndoe"
+            };
 
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(CONTENT_TYPE_TEXT, response.Content.Headers.ContentType?.ToString());
+            var client = new VerifyController(_config, _context);
+            var response = await client.Get(param);
 
-            var actualResult = await response.Content.ReadAsStringAsync();
-            Assert.IsNotNull(actualResult, "Verification code not found");
+            Assert.IsTrue(response.Success, response.Remarks);
         }
 
         [ClassCleanup]

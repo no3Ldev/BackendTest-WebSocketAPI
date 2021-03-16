@@ -1,5 +1,4 @@
 ﻿using BackendTestWebSocket.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
@@ -9,27 +8,25 @@ namespace BackendTestWebSocket.Controllers
 {
     public class LoginController : BaseController
     {
-        private readonly AppDbContext _context;
+        public LoginController(IConfiguration config, AppDbContext context) : base(config, context) { }
 
-        public LoginController(IConfiguration config, AppDbContext context) : base(config)
+        public async Task<LoginResponse> Post(LoginParam param)
         {
-            _context = context;
-        }
+            var response = new LoginResponse
+            {
+                Command = param.Command,
+                UsernameOrEmail = param.UsernameOrEmail,
+                Challenge = param.Challenge,
+                Success = false
+            };
 
-        public async Task<ActionResult<LoginResponse>> Post(LoginParam param)
-        {
             try
             {
                 if (param.Command != "login")
-                    return BadRequest();
-
-                var response = new LoginResponse
                 {
-                    Command = param.Command,
-                    UsernameOrEmail = param.UsernameOrEmail,
-                    Challenge = param.Challenge,
-                    Success = false
-                };
+                    response.Remarks = "Invalid command";
+                    return response;
+                }
 
                 var isActualUsername = false;
                 var actualUsername = _context.Users //find user on username and email
@@ -99,7 +96,8 @@ namespace BackendTestWebSocket.Controllers
             }
             catch (Exception ex)
             {
-                return ErrorCode(ex.Message);
+                response.Remarks = ex.Message;
+                return response;
             }
         }
     }

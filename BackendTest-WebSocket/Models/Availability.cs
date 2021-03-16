@@ -10,5 +10,6 @@
     public class AvailabilityResponse : AvailabilityParam
     {
         public bool Available { get; set; }
+        public string Remarks { get; set; }
     }
 }

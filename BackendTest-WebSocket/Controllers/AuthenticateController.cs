@@ -1,5 +1,4 @@
 ﻿using BackendTestWebSocket.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Linq;
@@ -9,26 +8,24 @@ namespace BackendTestWebSocket.Controllers
 {
     public class AuthenticateController : BaseController
     {
-        private readonly AppDbContext _context;
+        public AuthenticateController(IConfiguration config, AppDbContext context) : base(config, context) { }
 
-        public AuthenticateController(IConfiguration config, AppDbContext context) : base(config)
+        public async Task<AuthenticationResponse> Post(AuthenticationParam param)
         {
-            _context = context;
-        }
+            var response = new AuthenticationResponse
+            {
+                Command = param.Command,
+                Username = param.Username,
+                Success = false
+            };
 
-        public async Task<ActionResult<AuthenticationResponse>> Post(AuthenticationParam param)
-        {
             try
             {
                 if (param.Command != "loginSalt")
-                    return BadRequest();
-
-                var response = new AuthenticationResponse
                 {
-                    Command = param.Command,
-                    Username = param.Username,
-                    Success = false
-                };
+                    response.Remarks = "Invalid command";
+                    return response;
+                }
 
                 if (!_context.Users.Any(u => u.Username == param.Username || u.Email == param.Username))
                 {
@@ -68,7 +65,8 @@ namespace BackendTestWebSocket.Controllers
             }
             catch (Exception ex)
             {
-                return ErrorCode(ex.Message);
+                response.Remarks = ex.Message;
+                return response;
             }
         }
     }

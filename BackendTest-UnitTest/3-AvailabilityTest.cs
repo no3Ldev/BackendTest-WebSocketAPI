@@ -1,7 +1,6 @@
-using BackendTestWebAPI.Models;
+using BackendTestWebSocket.Controllers;
+using BackendTestWebSocket.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Net;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BackendTestUnitTest
@@ -24,16 +23,10 @@ namespace BackendTestUnitTest
                 Username = "johndoe"
             };
 
-            var client = _factory.CreateClient();
-            var response = await client.PostAsync($"api/Available", ObjectToJsonContent(param));
+            var client = new AvailableController(_config, _context);
+            var response = await client.Post(param);
 
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(CONTENT_TYPE_JSON, response.Content.Headers.ContentType?.ToString());
-
-            var strResult = await response.Content.ReadAsStringAsync();
-            var objResult = JsonSerializer.Deserialize<AvailabilityResponse>(strResult, _jsonOptions);
-
-            Assert.IsNotNull(objResult.Available);
+            Assert.IsNotNull(response.Available);
         }
 
         [TestMethod]
@@ -45,16 +38,10 @@ namespace BackendTestUnitTest
                 Email = "john.doe@mail.com"
             };
 
-            var client = _factory.CreateClient();
-            var response = await client.PostAsync($"api/Available", ObjectToJsonContent(param));
+            var client = new AvailableController(_config, _context);
+            var response = await client.Post(param);
 
-            Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-            Assert.AreEqual(CONTENT_TYPE_JSON, response.Content.Headers.ContentType?.ToString());
-
-            var strResult = await response.Content.ReadAsStringAsync();
-            var objResult = JsonSerializer.Deserialize<AvailabilityResponse>(strResult, _jsonOptions);
-
-            Assert.IsNotNull(objResult.Available);
+            Assert.IsNotNull(response.Available);
         }
 
         [ClassCleanup]

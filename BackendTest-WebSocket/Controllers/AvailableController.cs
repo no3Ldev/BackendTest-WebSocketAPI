@@ -1,5 +1,4 @@
 ﻿using BackendTestWebSocket.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -9,27 +8,25 @@ namespace BackendTestWebSocket.Controllers
 {
     public class AvailableController : BaseController
     {
-        private readonly AppDbContext _context;
+        public AvailableController(IConfiguration config, AppDbContext context) : base(config, context) { }
 
-        public AvailableController(IConfiguration config, AppDbContext context) : base(config)
+        public async Task<AvailabilityResponse> Post(AvailabilityParam param)
         {
-            _context = context;
-        }
+            var response = new AvailabilityResponse
+            {
+                Command = param.Command,
+                Username = param.Username,
+                Email = param.Email,
+                Available = true
+            };
 
-        public async Task<ActionResult<AvailabilityResponse>> Post(AvailabilityParam param)
-        {
             try
             {
                 if (param.Command != "checkUsername" && param.Command != "checkEmail")
-                    return BadRequest();
-
-                var response = new AvailabilityResponse
                 {
-                    Command = param.Command,
-                    Username = param.Username,
-                    Email = param.Email,
-                    Available = true
-                };
+                    response.Remarks = "Invalid command";
+                    return response;
+                }
 
                 if (param.Command == "checkUsername")
                 {
@@ -51,7 +48,8 @@ namespace BackendTestWebSocket.Controllers
             }
             catch (Exception ex)
             {
-                return ErrorCode(ex.Message);
+                response.Remarks = ex.Message;
+                return response;
             }
         }
     }
