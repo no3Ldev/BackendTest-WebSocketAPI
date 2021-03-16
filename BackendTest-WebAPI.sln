@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendTest-WebAPI", "BackendTest-WebAPI\BackendTest-WebAPI.csproj", "{23E5BDA5-49E7-4EDD-B0BA-DEA7D5A4D026}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BackendTest-UnitTest", "BackendTest-UnitTest\BackendTest-UnitTest.csproj", "{719FECE0-EF53-4E19-976A-2CE1A787AEE9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendTest-UnitTest", "BackendTest-UnitTest\BackendTest-UnitTest.csproj", "{719FECE0-EF53-4E19-976A-2CE1A787AEE9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendTest-WebSocket", "BackendTest-WebSocket\BackendTest-WebSocket.csproj", "{2391959F-2654-468C-BFE5-67FF898E4E50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{719FECE0-EF53-4E19-976A-2CE1A787AEE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{719FECE0-EF53-4E19-976A-2CE1A787AEE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{719FECE0-EF53-4E19-976A-2CE1A787AEE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2391959F-2654-468C-BFE5-67FF898E4E50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2391959F-2654-468C-BFE5-67FF898E4E50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2391959F-2654-468C-BFE5-67FF898E4E50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2391959F-2654-468C-BFE5-67FF898E4E50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
