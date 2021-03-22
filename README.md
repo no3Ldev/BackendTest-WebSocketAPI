@@ -1,32 +1,28 @@
-# Backend Test - Web API with WebSocket
-This is a sample ASP.NET Core Web API project that exposes both classic Web API and WebSockets endpoints to process API requests in JSON format from client. It uses Microsoft Azure Database for PostgreSQL as its datasource and Entity Framework Core for its data operations such as user registration and authentication, session management, and verification code system.
+# Backend Test - WebSocket API Endpoint
+This is a sample ASP.NET Core WebSocket project that exposes both raw WebSockets endpoints to process API requests in JSON format from client. It uses Microsoft Azure Database for PostgreSQL as its datasource and Entity Framework Core for its data operations such as user registration and authentication, session management, and verification code system.
 
 ## Technologies Used:
 * ASP.NET Core 5.0 Web API
 * Configured for HTTPS
 * Enabled Docker Support (Windows)
-* Enabled OpenAPI support
 * Raw WebSocket protocol
 * MSTest Unit Testing
-* Built-in Swagger Support
 * Azure Database for PostgreSQL v11
 * Microsoft Entity Framework Core (PostgreSQL)
 * SHA-256 HMAC hashing
 
 ## Visual Studio Projects
-* <b>BackendTest-WebAPI</b> - main web api project
-* <b>BackendTest-UnitTest</b> - unit testing project to test web api functions
+* <b>BackendTest-WebSocket</b> - main web socket project
+* <b>BackendTest-UnitTest</b> - unit testing project to test class functions
 
 ## Unit-Test Project: BackendTest-UnitTest
 * <b>_BaseClass.cs</b> - shared methods used among all test classes
-* <b>1-5*Test.cs</b> - unit testing classes for web api
-* <b>6-WebSocketTest.cs</b> - unresolved. Supposed unit testing for web socket
-* <b>6-WebSocketTest.html</b> - unit testing for web socket using javascript
+* <b>1-5*Test.cs</b> - unit testing for class functions
+* <b>6-WebSocketTest.html</b> - testing for web socket using javascript
 
 ## How to Test?
-* <b>MSTest Unit-Testing for Web API</b> - on visual studio, press `Ctrl+R, A` or go to `Test` menu, then click `Run All Test` item
-* <b>Swagger for Web API</b> - on visual studio, press `F5` or go to `Debug` menu then click `Start Debugging` item
-* <b>Web Client (Javascript) for Web Socket</b> - on `BackEndTest-UnitTest` project, open `6-WebSocketTest.html` on your web browser
+* <b>MSTest Unit-Testing for API functions</b> - on visual studio, press `Ctrl+R, A` or go to `Test` menu, then click `Run All Test` item
+* <b>Web Client for Web Socket</b> - run `BackendTest-WebSocket` project and open `BackEndTest-UnitTest\6-WebSocketTest.html` on your web browser
 * <b>Use Third-Party WebSocket Test Client for Chrome</b> - install `WebSocket Test Client` extension found <a href="https://chrome.google.com/webstore/detail/websocket-test-client/fgponpodhbmadfljofbimhhlengambbn" target="_blank">here</a> in Chrome Web Store
 
 ## Sample JSON Request and Response
@@ -69,7 +65,6 @@ This is a sample ASP.NET Core Web API project that exposes both classic Web API 
 * <b>Verification</b> - stores verification codes and validity
 
 ## Configuration: AppSettings
-* <b>base_address</b> - actual url path to web api <br>
 * <b>https_port</b> - port number for https connections <br>
 * <b>superSecretKey</b> - secret key to further hash stored passwords <br>
 * <b>salt_expiry</b> - login salt expiration in seconds <br>
@@ -80,5 +75,4 @@ This is a sample ASP.NET Core Web API project that exposes both classic Web API 
 ## Testing Screenshots:
 ![image](https://user-images.githubusercontent.com/13361597/111085870-5c774700-8554-11eb-9d26-a9288265113c.png)
 ![image](https://user-images.githubusercontent.com/13361597/111085925-96e0e400-8554-11eb-8611-7ee9bbd5575d.png)
-![image](https://user-images.githubusercontent.com/13361597/111087768-5ede9e80-855e-11eb-857e-6497c8b76a6a.png)
 
