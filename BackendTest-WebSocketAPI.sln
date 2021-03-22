@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendTest-UnitTest", "BackendTest-UnitTest\BackendTest-UnitTest.csproj", "{719FECE0-EF53-4E19-976A-2CE1A787AEE9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendTest-WebSocket", "BackendTest-WebSocket\BackendTest-WebSocket.csproj", "{2391959F-2654-468C-BFE5-67FF898E4E50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BackendTest-WebSocket", "BackendTest-WebSocketAPI\BackendTest-WebSocketAPI.csproj", "{2391959F-2654-468C-BFE5-67FF898E4E50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
